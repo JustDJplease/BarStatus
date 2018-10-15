@@ -1,0 +1,10 @@
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
+
+authors: [NectarHoney]
+main: me.nectarhoney.barstatus.BarStatus
+website: https://github.com/JustDJplease/
+softdepend: [Vault, PEX-Rankup, PermissionsEX]
+
+api-version: 1.13
