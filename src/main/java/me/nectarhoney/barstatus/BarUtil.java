@@ -10,18 +10,26 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 import java.math.BigDecimal;
 
 class BarUtil {
+    // this method is called when we want to update a bossbar
     static BossBar update(BarStatus barStatus, Player player, BossBar bossBar) {
+        // we set the new progress
         bossBar.setProgress(calculateProgress(barStatus, player));
+        // we set the title
         bossBar.setTitle(formatTitle(barStatus, player));
+        // and we return the updated bossbar!
         return bossBar;
     }
 
+    // formatting the title:
     private static String formatTitle(BarStatus barStatus, Player player) {
+        // first, getting the PEX-Rankup methods from the main class.
         RankupAPI api = barStatus.getRankupAPI();
         PermissionUser permissionUser = PermissionsEx.getUser(player);
+        // getting the PEX data from a player.
         String currentGroup = api.getCurrentGroup(permissionUser);
         if (currentGroup == null || currentGroup.equals("")) currentGroup = "Unranked";
 
+        // applying the color
         String color = "§7";
         switch (ChatColor.stripColor(currentGroup.toLowerCase())) {
             case "unranked":
@@ -73,19 +81,25 @@ class BarUtil {
         String nextStatus = api.getCostOfNextRankFormatted(permissionUser);
         if (nextStatus == null || nextStatus.equals("")) nextStatus = "0.0";
 
+        // forming the sentence
         return "§f§lRank: " + color + "§l" + currentGroup + " §f§lNext: §f" + currentStatus + "§7/§f" + nextStatus;
     }
 
+    // calculating the percentage
     private static double calculateProgress(BarStatus barStatus, Player player) {
         RankupAPI api = barStatus.getRankupAPI();
         PermissionUser permissionUser = PermissionsEx.getUser(player);
+        // this is the current balance of the player.
         BigDecimal current = api.getBalance(player);
         if (current == null) return 0.0D;
 
+        // this is the balance of their next rank.
         BigDecimal next = api.getCostOfNextRank(permissionUser);
         if (next == null) return 0.0D;
 
+        // this ratio is the percentage of how much the bossbar should be filled. 0.0 = empty, 1.0 = full.
         double ratio = current.doubleValue() / next.doubleValue();
+        // and here we're making sure the number is actually between 0 and 1. if it is not, we're adjusting it.
         if (Double.isNaN(ratio)) return 0.0D;
         if (ratio < 0.0) return 0.0D;
         if (ratio > 1.0) return 1.0D;
