@@ -8,3 +8,8 @@ website: https://github.com/JustDJplease/
 softdepend: [Vault, PEX-Rankup, PermissionsEX]
 
 api-version: 1.13
+
+commands:
+  togglerankbar:
+    description: Enable / Disable the rank bar.
+    aliases: [togglebossbar, hiderankbar]

@@ -76,13 +76,23 @@ class BarUtil {
                 break;
         }
         String currentStatus = api.getBalanceFormatted(player);
-        if (currentStatus == null || currentStatus.equals("")) currentStatus = "0.0";
+        BigDecimal currentStatusNumber = api.getBalance(player);
+        if (currentStatus == null || currentStatus.equals("")) {
+            currentStatus = "0.0";
+            currentStatusNumber = new BigDecimal(0D);
+        }
 
         String nextStatus = api.getCostOfNextRankFormatted(permissionUser);
-        if (nextStatus == null || nextStatus.equals("")) nextStatus = "0.0";
+        BigDecimal nextStatusNumber = api.getCostOfNextRank(permissionUser);
+        if (nextStatus == null || nextStatus.equals("")) {
+            nextStatus = "0.0";
+            nextStatusNumber = new BigDecimal(0D);
+        }
 
         // forming the sentence
-        return "§f§lRank: " + color + "§l" + currentGroup + " §f§lNext: §f" + currentStatus + "§7/§f" + nextStatus;
+        if (nextStatusNumber.doubleValue() > currentStatusNumber.doubleValue())
+            return "§f§lRank: " + color + "§l" + currentGroup + " §f§lNext: §f" + currentStatus + "§7/§f" + nextStatus;
+        return "§f§lRank: " + color + "§l" + currentGroup + " §4§lRank Up!";
     }
 
     // calculating the percentage

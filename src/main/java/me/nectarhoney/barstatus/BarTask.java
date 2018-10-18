@@ -29,6 +29,7 @@ public class BarTask implements Runnable {
         for (Player online : Bukkit.getOnlinePlayers()) {
             // then, for every online player:
             UUID uuid = online.getUniqueId();
+            if (barStatus.hasBarDisabled(uuid)) continue;
             // we check if that list already contains a bossbar for them.
             if (bars.containsKey(uuid)) {
                 // if it does, we simply update it.
